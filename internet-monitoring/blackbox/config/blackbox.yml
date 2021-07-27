@@ -34,3 +34,11 @@ modules:
         - expect: "^:[^ ]+ 001"
   icmp:
     prober: icmp
+  dns_udp:
+    prober: dns
+    timeout: 5s
+    dns:
+      query_name: "www.prometheus.io."
+      query_type: "A"
+      valid_rcodes:
+      - NOERROR

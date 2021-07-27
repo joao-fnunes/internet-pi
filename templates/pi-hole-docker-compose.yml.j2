@@ -2,6 +2,10 @@
 ---
 version: "3"
 
+networks:
+  pi-hole:
+    external: true
+
 # More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 services:
   pihole:
@@ -27,3 +31,5 @@ services:
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
+    networks:
+      - pi-hole

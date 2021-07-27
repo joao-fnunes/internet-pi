@@ -8,6 +8,8 @@ volumes:
 networks:
   front-tier:
   back-tier:
+  pi-hole:
+    external: true
 
 services:
   prometheus:
@@ -60,6 +62,7 @@ services:
       - '--config.file=/config/blackbox.yml'
     networks:
       - back-tier
+      - pi-hole
 
   speedtest:
     tty: true
