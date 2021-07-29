@@ -1,0 +1,23 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+networks:
+  pi-hole:
+    external: true
+
+# More info at https://github.com/MatthewVance/unbound-docker-rpi and https://unbound.net/
+services:
+  unbound:
+    container_name: unbound
+    image: mvance/unbound-rpi:latest
+    hostname: '{{ unbound_hostname }}'
+    ports:
+      - "5335:53/tcp"
+      - "5335:53/udp"
+    volumes:
+      - './etc-unbound/:/opt/unbound/etc/unbound'
+    restart: unless-stopped
+    networks:
+      pi-hole:
+        ipv4_address: '{{ unbound_ip }}'

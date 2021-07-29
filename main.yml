@@ -4,6 +4,7 @@
 
   pre_tasks:
     - name: Load configuration (with defaults from example file).
+      tags: config
       ansible.builtin.include_vars: "{{ item }}"
       loop:
         - example.config.yml
@@ -37,6 +38,11 @@
     - name: Set up Pi Hole.
       ansible.builtin.import_tasks: tasks/pi-hole.yml
       when: pihole_enable
+
+    - name: Set up Unbound.
+      tags: unbound
+      ansible.builtin.import_tasks: tasks/unbound.yml
+      when: unbound_enable
 
     - name: Set up Shelly Plug Monitoring.
       ansible.builtin.import_tasks: tasks/shelly-plug.yml

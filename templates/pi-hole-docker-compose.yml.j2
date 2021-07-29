@@ -24,7 +24,7 @@ services:
       ServerIP: '{{ ansible_facts['default_ipv4']['address'] }}'
     dns:
       - 127.0.0.1
-      - 8.8.8.8
+      - '{{ unbound_ip }}'
     volumes:
       - './etc-pihole/:/etc/pihole/'
       - './etc-dnsmasq.d/:/etc/dnsmasq.d/'

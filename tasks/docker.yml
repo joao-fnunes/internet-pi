@@ -66,3 +66,6 @@
 - name: Create pi-hole docker network
   docker_network:
     name: pi-hole
+    ipam_config:
+      - subnet: "{{ pihole_subnet }}"
+        gateway: "{{ pihole_gateway }}"
