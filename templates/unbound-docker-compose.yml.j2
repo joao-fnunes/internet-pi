@@ -3,6 +3,8 @@
 version: "3"
 
 networks:
+  unbound:
+    external: true
   pi-hole:
     external: true
 
@@ -19,5 +21,6 @@ services:
       - './etc-unbound/:/opt/unbound/etc/unbound'
     restart: unless-stopped
     networks:
+      unbound:
       pi-hole:
         ipv4_address: '{{ unbound_ip }}'

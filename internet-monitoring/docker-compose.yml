@@ -10,6 +10,8 @@ networks:
   back-tier:
   pi-hole:
     external: true
+  unbound:
+    external: true
 
 services:
   prometheus:
@@ -30,6 +32,7 @@ services:
       - speedtest:speedtest
     networks:
       - back-tier
+      - unbound
 
   grafana:
     image: grafana/grafana

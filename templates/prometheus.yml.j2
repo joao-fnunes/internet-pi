@@ -22,6 +22,14 @@ scrape_configs:
     static_configs:
       - targets: ['speedtest:9798']
 
+{% if unbound_telemetry_enable %}
+  - job_name: 'unbound'
+    metrics_path: /metrics
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['unbound-telemetry:9167']
+{% endif %}
+
 {% if shelly_plug_enable %}
   - job_name: 'shelly-plug'
     metrics_path: /metrics

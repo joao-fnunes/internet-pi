@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+networks:
+  unbound:
+    external: true
+
+# More info at https://github.com/svartalf/unbound-telemetry
+services:
+  unbound-telemetry:
+    container_name: unbound-telemetry
+    image: joaofnunes/unbound-telemetry-rpi
+    command: tcp --control-interface unbound:8953
+    ports:
+      - "9167:9167/tcp"
+    restart: unless-stopped
+    networks:
+      - unbound
