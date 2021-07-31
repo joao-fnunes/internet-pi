@@ -41,6 +41,8 @@
       dest: prometheus/pinghosts.yaml
     - src: prometheus-dnstargets.yaml.j2
       dest: prometheus/dnstargets.yaml
+    - src: prometheus-snmptargets.yaml.j2
+      dest: prometheus/snmptargets.yaml
   notify: Restart internet-monitoring
   become: false
 

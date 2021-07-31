@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+networks:
+  snmp:
+    external: true
+
+# More info at https://github.com/MatthewVance/unbound-docker-rpi and https://unbound.net/
+services:
+  snmp:
+    container_name: snmp
+    image: ricardbejarano/snmp_exporter
+    ports:
+      - "9116:9116/tcp"
+    restart: unless-stopped
+    networks:
+      snmp:

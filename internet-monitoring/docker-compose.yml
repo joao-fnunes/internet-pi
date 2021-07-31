@@ -12,6 +12,8 @@ networks:
     external: true
   unbound:
     external: true
+  snmp:
+    external: true
 
 services:
   prometheus:
@@ -33,6 +35,7 @@ services:
     networks:
       - back-tier
       - unbound
+      - snmp
 
   grafana:
     image: grafana/grafana

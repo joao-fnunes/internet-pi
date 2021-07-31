@@ -49,6 +49,11 @@
       ansible.builtin.import_tasks: tasks/unbound-telemetry.yml
       when: unbound_telemetry_enable
 
+    - name: Set up SNMP.
+      tags: snmp
+      ansible.builtin.import_tasks: tasks/snmp.yml
+      when: snmp_enable
+
     - name: Set up Shelly Plug Monitoring.
       ansible.builtin.import_tasks: tasks/shelly-plug.yml
       when: shelly_plug_enable

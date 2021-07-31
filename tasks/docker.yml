@@ -73,3 +73,7 @@
 - name: Create Unbound docker network
   docker_network:
     name: unbound
+
+- name: Create SNMP docker network
+  docker_network:
+    name: snmp

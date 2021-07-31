@@ -20,6 +20,13 @@
     restarted: true
   become: false
 
+- name: Restart snmp
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/snmp/"
+    build: false
+    restarted: true
+  become: false
+
 - name: Restart internet-monitoring
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/internet-monitoring/"

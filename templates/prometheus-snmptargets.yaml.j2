@@ -1,0 +1,3 @@
+---
+- targets:
+{{ snmp_targets | to_nice_yaml() | indent(4, True) }}
