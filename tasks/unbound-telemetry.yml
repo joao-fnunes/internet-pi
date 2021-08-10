@@ -1,4 +1,8 @@
 ---
+- assert:
+    that: ansible_machine.startswith("arm")
+    fail_msg: "The current docker image for unbound-telemetry is for ARM systems only."
+
 - name: Create unbound-telemetry folder on Pi.
   ansible.builtin.file:
     path: "{{ config_dir }}/unbound-telemetry"

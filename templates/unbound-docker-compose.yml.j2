@@ -12,7 +12,11 @@ networks:
 services:
   unbound:
     container_name: unbound
+{% if ansible_machine.startswith("arm") %}
     image: mvance/unbound-rpi:latest
+{% else %}
+    image: mvance/unbound:latest
+{% endif %}
     ports:
       - "5335:53/tcp"
       - "5335:53/udp"
