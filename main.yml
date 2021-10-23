@@ -47,6 +47,16 @@
       ansible.builtin.import_tasks: tasks/snmp.yml
       when: snmp_enable
 
+    - name: Set up RTSP.
+      tags: rtsp
+      ansible.builtin.import_tasks: tasks/rtsp.yml
+      when: rtsp_enable
+
+    - name: Set up SMB.
+      tags: smb
+      ansible.builtin.import_tasks: tasks/smb.yml
+      when: smb_enable
+
     - name: Set up Shelly Plug Monitoring.
       ansible.builtin.import_tasks: tasks/shelly-plug.yml
       when: shelly_plug_enable

@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+# More info at https://github.com/dastrasmue/rpi-samba
+services:
+  smb:
+    container_name: smb
+    image: dastrasmue/rpi-samba
+    hostname: pi
+    ports:
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139"
+      - "445:445"
+      - "445:445/udp"
+    volumes:
+      - /mnt/seagate/:/share/seagate/
+    restart: unless-stopped
+    command: "-u pi:pi -s 'seagate:/share/seagate:ro:pi'"

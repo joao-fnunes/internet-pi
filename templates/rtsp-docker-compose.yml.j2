@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+# More info at https://github.com/aler9/rtsp-simple-server
+services:
+  rtsp:
+    container_name: rtsp
+    image: joaofnunes/rtsp-simple-server-ffmpeg
+    ports:
+      - "8554:8554/tcp"
+    environment:
+      RTSP_PROTOCOLS: "tcp"
+      RTSP_RTMPDISABLE: "yes"
+      RTSP_HLSDISABLE: "yes"
+    volumes:
+      - ./rtsp-simple-server.yml:/rtsp-simple-server.yml
+      - /mnt/seagate/rtsp/videos/:/videos/
+    restart: unless-stopped
