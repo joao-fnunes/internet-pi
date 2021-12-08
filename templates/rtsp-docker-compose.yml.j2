@@ -8,7 +8,7 @@ services:
     container_name: rtsp
     image: joaofnunes/rtsp-simple-server-ffmpeg
     ports:
-      - "8554:8554/tcp"
+      - 8554:8554/tcp
     environment:
       RTSP_PROTOCOLS: "tcp"
       RTSP_RTMPDISABLE: "yes"
@@ -16,4 +16,5 @@ services:
     volumes:
       - ./rtsp-simple-server.yml:/rtsp-simple-server.yml
       - /mnt/seagate/rtsp/videos/:/videos/
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped

@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+# More info at https://www.home-assistant.io/installation/raspberrypi
+services:
+  home-assistant:
+    container_name: home-assistant
+    image: ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
+    ports:
+      - 8123:8123
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - home-assistant
+    restart: unless-stopped
+    privileged: True
+
+networks:
+  home-assistant:
+    external: true

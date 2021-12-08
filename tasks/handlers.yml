@@ -41,6 +41,20 @@
     restarted: true
   become: false
 
+- name: Restart home-assistant
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/home-assistant/"
+    build: false
+    restarted: true
+  become: false
+
+- name: Restart zwavejs
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/zwavejs/"
+    build: false
+    restarted: true
+  become: false
+
 - name: Restart internet-monitoring
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/internet-monitoring/"

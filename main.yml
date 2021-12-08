@@ -57,6 +57,16 @@
       ansible.builtin.import_tasks: tasks/smb.yml
       when: smb_enable
 
+    - name: Set up Home Assistant.
+      tags: home-assistant
+      ansible.builtin.import_tasks: tasks/home-assistant.yml
+      when: home_assistant_enable
+
+    - name: Set up ZWaveJS.
+      tags: zwavejs
+      ansible.builtin.import_tasks: tasks/zwavejs.yml
+      when: home_assistant_enable
+
     - name: Set up Shelly Plug Monitoring.
       ansible.builtin.import_tasks: tasks/shelly-plug.yml
       when: shelly_plug_enable

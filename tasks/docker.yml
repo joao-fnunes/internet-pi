@@ -77,3 +77,7 @@
 - name: Create SNMP docker network
   docker_network:
     name: snmp
+
+- name: Create Home Assistant docker network
+  docker_network:
+    name: home-assistant

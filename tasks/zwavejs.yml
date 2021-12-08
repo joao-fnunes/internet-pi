@@ -1,0 +1,31 @@
+---
+- name: Create zwavejs folder on Pi.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/zwavejs"
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy zwavejs docker-compose template to Pi.
+  ansible.builtin.template:
+    src: templates/zwavejs-docker-compose.yml.j2
+    dest: "{{ config_dir }}/zwavejs/docker-compose.yml"
+    mode: '0640'
+  become: false
+  notify: Restart zwavejs
+
+- name: Copy zwavejs config to Pi.
+  ansible.builtin.template:
+    src: templates/zwavejs-settings.json.j2
+    dest: "{{ config_dir }}/zwavejs/settings.json"
+    mode: '0640'
+  become: false
+  notify: Restart zwavejs
+
+# TODO: The first time this playbook is run, the `pi` user may not be added
+# to the `docker` group, so this task may fail.
+- name: Ensure zwavejs is running.
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/zwavejs/"
+    build: false
+  become: false

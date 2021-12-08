@@ -1,0 +1,27 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+# More info at https://zwave-js.github.io/zwavejs2mqtt/#/getting-started/quick-start
+services:
+  zwavejs:
+    container_name: zwavejs
+    image: zwavejs/zwavejs2mqtt:latest
+    restart: unless-stopped
+    ports:
+      - 8091:8091
+      - 3000:3000
+    devices:
+      - {{ zwavejs_dev_id }}:/dev/zwave
+    volumes:
+      - ./settings.json:/usr/src/app/store/settings.json
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - home-assistant
+    environment:
+      - ZWAVEJS_EXTERNAL_CONFIG=/usr/src/app/store/.config-db
+      - SESSION_SECRET='{{ zwavejs_session_secret }}'
+
+networks:
+  home-assistant:
+    external: true

@@ -1,0 +1,49 @@
+{
+  "mqtt": {
+    "name": "Zwavejs2Mqtt",
+    "host": "localhost",
+    "port": 1883,
+    "qos": 1,
+    "prefix": "zwave",
+    "reconnectPeriod": 3000,
+    "retain": true,
+    "clean": true,
+    "auth": false,
+    "_ca": "",
+    "ca": "",
+    "_cert": "",
+    "cert": "",
+    "_key": "",
+    "key": ""
+  },
+  "gateway": {
+    "type": 0,
+    "plugins": [],
+    "authEnabled": true,
+    "payloadType": 0,
+    "nodeNames": true,
+    "hassDiscovery": true,
+    "discoveryPrefix": "homeassistant",
+    "logEnabled": true,
+    "logLevel": "silly",
+    "logToFile": false,
+    "values": [],
+    "https": true
+  },
+  "zwave": {
+    "port": "/dev/zwave",
+    "commandsTimeout": 30,
+    "logLevel": "silly",
+    "securityKeys": {
+      "S2_Authenticated": "{{ zwavejs_s2_auth_key }}",
+      "S0_Legacy": "{{ zwavejs_s0_legacy_key }}"
+    },
+    "deviceConfigPriorityDir": "/usr/src/app/store/config",
+    "logToFile": true,
+    "serverEnabled": true,
+    "enableSoftReset": true,
+    "enableStatistics": false,
+    "serverPort": 3000,
+    "disclaimerVersion": 1
+  }
+}
