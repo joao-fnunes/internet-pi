@@ -8,7 +8,7 @@
 
 - name: Copy Unbound docker-compose template to Pi.
   ansible.builtin.template:
-    src: templates/unbound-docker-compose.yml.j2
+    src: templates/unbound/docker-compose.yml.j2
     dest: "{{ config_dir }}/unbound/docker-compose.yml"
     mode: '0640'
   become: false

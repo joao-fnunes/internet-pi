@@ -8,7 +8,7 @@
 
 - name: Copy zwavejs docker-compose template to Pi.
   ansible.builtin.template:
-    src: templates/zwavejs-docker-compose.yml.j2
+    src: templates/zwavejs/docker-compose.yml.j2
     dest: "{{ config_dir }}/zwavejs/docker-compose.yml"
     mode: '0640'
   become: false
@@ -16,7 +16,7 @@
 
 - name: Copy zwavejs config to Pi.
   ansible.builtin.template:
-    src: templates/zwavejs-settings.json.j2
+    src: templates/zwavejs/settings.json.j2
     dest: "{{ config_dir }}/zwavejs/settings.json"
     mode: '0640'
   become: false
