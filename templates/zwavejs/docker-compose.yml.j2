@@ -14,7 +14,9 @@ services:
     devices:
       - {{ zwavejs_dev_id }}:/dev/zwave
     volumes:
+      - ./store:/usr/src/app/store
       - ./settings.json:/usr/src/app/store/settings.json
+      - ./users.json:/usr/src/app/store/users.json
       - /etc/localtime:/etc/localtime:ro
     networks:
       - home-assistant
