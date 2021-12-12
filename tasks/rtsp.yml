@@ -4,14 +4,12 @@
     path: "{{ config_dir }}/rtsp"
     state: directory
     mode: 0755
-  become: false
 
 - name: Copy rtsp docker-compose template to Pi.
   ansible.builtin.template:
     src: templates/rtsp/docker-compose.yml.j2
     dest: "{{ config_dir }}/rtsp/docker-compose.yml"
     mode: '0640'
-  become: false
   notify: Restart rtsp
 
 - name: Copy rtsp config to Pi.
@@ -19,7 +17,13 @@
     src: templates/rtsp/rtsp-simple-server.yml.j2
     dest: "{{ config_dir }}/rtsp/rtsp-simple-server.yml"
     mode: '0640'
-  become: false
+  notify: Restart rtsp
+
+- name: Copy create-video.sh to Pi.
+  ansible.builtin.template:
+    src: templates/rtsp/create-video.sh
+    dest: "{{ config_dir }}/rtsp/create-video.sh"
+    mode: '0750'
   notify: Restart rtsp
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
@@ -28,4 +32,3 @@
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/rtsp/"
     build: false
-  become: false

@@ -123,20 +123,15 @@ hlsAllowOrigin: '*'
 # the settings under the path "all" are applied to all paths that do not match
 # another entry.
 paths:
-  living-room-cam:
-    source: rtsp://192.168.0.51/live0
-    sourceRetryPause: 1s
+{% for cam in rtsp_cams %}
+  {{ cam.name }}:
+    source: {{ cam.source }}
+    sourceRetryPause: 2s
 
-    runOnInit: ffmpeg -i rtsp://localhost:$RTSP_PORT/$RTSP_PATH -c copy -f segment -strftime 1 -segment_time 600 -segment_format mp4 /videos/cams/living-room/saved_%Y-%m-%d_%H-%M-%S.mp4
+    runOnInit: /create-video.sh /videos/cams/{{ cam.name }} rtsp://localhost:$RTSP_PORT/$RTSP_PATH
     runOnInitRestart: yes
 
-  kids-room-cam:
-    source: rtsp://admin:admin@192.168.0.52/live0
-    sourceRetryPause: 1s
-
-    runOnInit: ffmpeg -i rtsp://localhost:$RTSP_PORT/$RTSP_PATH -c copy -f segment -strftime 1 -segment_time 600 -segment_format mp4 /videos/cams/kids-room/saved_%Y-%m-%d_%H-%M-%S.mp4
-    runOnInitRestart: yes
-
+{% endfor %}
   all:
     # source of the stream - this can be:
     # * publisher -> the stream is published by a RTSP or RTMP client

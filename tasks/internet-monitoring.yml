@@ -18,14 +18,6 @@
     delete: false
     recursive: true
     perms: false
-  become: false
-
-# This is an upgrade task from 1.x to 2.x - can be removed for 3.x.
-- name: Ensure internet-monitoring directory is not a Git repository.
-  ansible.builtin.file:
-    path: "{{ config_dir }}/internet-monitoring/.git/"
-    state: absent
-  become: false
 
 - name: Copy templated internet-monitoring files into place.
   ansible.builtin.template:
@@ -39,10 +31,8 @@
     - dnstargets.yaml
     - snmptargets.yaml
   notify: Restart internet-monitoring
-  become: false
 
 - name: Ensure internet-monitoring environment is running.
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/internet-monitoring/"
     build: false
-  become: false

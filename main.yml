@@ -1,9 +1,9 @@
 ---
 - hosts: internet_pi
-  become: true
 
   pre_tasks:
     - name: Ensure apt cache is up to date.
+      become: true
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 3600
@@ -11,6 +11,7 @@
         - ansible_facts.os_family == "Debian"
 
     - name: Ensure pacman cache is up to date
+      become: true
       community.general.pacman:
         update_cache: true
       when:
@@ -23,6 +24,7 @@
   tasks:
     - name: Setup Docker.
       ansible.builtin.import_tasks: tasks/docker.yml
+      become: true
 
     - name: Set up Internet Monitoring.
       ansible.builtin.import_tasks: tasks/internet-monitoring.yml

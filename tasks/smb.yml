@@ -4,14 +4,12 @@
     path: "{{ config_dir }}/smb"
     state: directory
     mode: 0755
-  become: false
 
 - name: Copy smb docker-compose template to Pi.
   ansible.builtin.template:
     src: templates/smb/docker-compose.yml.j2
     dest: "{{ config_dir }}/smb/docker-compose.yml"
     mode: '0640'
-  become: false
   notify: Restart smb
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
@@ -20,4 +18,3 @@
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/smb/"
     build: false
-  become: false

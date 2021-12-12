@@ -4,14 +4,12 @@
     path: "{{ config_dir }}/pi-hole"
     state: directory
     mode: 0755
-  become: false
 
 - name: Copy Pi-hole docker-compose template to Pi.
   ansible.builtin.template:
     src: templates/pi-hole/docker-compose.yml.j2
     dest: "{{ config_dir }}/pi-hole/docker-compose.yml"
     mode: '0640'
-  become: false
   notify: Restart pi-hole
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
@@ -20,4 +18,3 @@
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/pi-hole/"
     build: false
-  become: false

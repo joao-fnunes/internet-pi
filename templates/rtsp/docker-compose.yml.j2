@@ -7,6 +7,7 @@ services:
   rtsp:
     container_name: rtsp
     image: joaofnunes/rtsp-simple-server-ffmpeg
+    user: {{ ansible_user_uid }}:{{ ansible_user_gid }} # user: {{ ansible_user_id }}
     ports:
       - 8554:8554/tcp
     environment:
@@ -15,6 +16,7 @@ services:
       RTSP_HLSDISABLE: "yes"
     volumes:
       - ./rtsp-simple-server.yml:/rtsp-simple-server.yml
+      - ./create-video.sh:/create-video.sh
       - /mnt/seagate/rtsp/videos/:/videos/
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
