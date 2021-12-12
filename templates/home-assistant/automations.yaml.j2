@@ -1,0 +1,57 @@
+---
+- alias: "Family Room Motion Detected"
+  id: "family_room_motion"
+  trigger:
+    - platform: state
+      entity_id: sensor.family_room_latest_recording_time
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.bright_tv_lamp
+          - switch.family_lamp_1
+          - switch.family_lamp_2
+          - switch.family_lamp_3
+
+- alias: "Family Room No Motion"
+  id: "family_room_no_motion"
+  trigger:
+    - platform: time_pattern
+      minutes: "/10"
+  action:
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.family_room_light_switch
+  condition: {% raw %}"{{ states('sensor.family_room_latest_recording_time') | as_datetime | as_local < now() - timedelta(minutes = 30) }}"{% endraw %}
+
+
+- alias: "Family Room Light Switch On"
+  id: "family_room_light_switch_on"
+  trigger:
+    - platform: state
+      entity_id: light.family_room_light_switch
+      to: "on"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.bright_tv_lamp
+          - switch.family_lamp_1
+          - switch.family_lamp_2
+          - switch.family_lamp_3
+
+- alias: "Family Room Light Switch Off"
+  id: "family_room_light_switch_off"
+  trigger:
+    - platform: state
+      entity_id: light.family_room_light_switch
+      to: "off"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.bright_tv_lamp
+          - switch.family_lamp_1
+          - switch.family_lamp_2
+          - switch.family_lamp_3

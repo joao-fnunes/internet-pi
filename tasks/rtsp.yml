@@ -26,6 +26,14 @@
     mode: '0750'
   notify: Restart rtsp
 
+- name: Copy create-video.sh to Pi.
+  ansible.builtin.template:
+    src: templates/rtsp/create-video.sh
+    dest: "{{ config_dir }}/rtsp/create-video.sh"
+    mode: '0750'
+  become: false
+  notify: Restart rtsp
+
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.
 - name: Ensure rtsp is running.

@@ -12,9 +12,26 @@ scene: !include scenes.yaml
 
 {% if home_assistant_wemo_static_devices is defined %}
 wemo:
-  discovery: false
+  discovery: true
   static:
 {% for ip in home_assistant_wemo_static_devices %}
     - {{ ip }}
 {% endfor%}
+{% endif %}
+
+homeassistant:
+  allowlist_external_dirs:
+    - /rtsp-cams
+
+{% if home_assistant_cams is defined %}
+sensor:
+{% for cam in home_assistant_cams %}
+  - platform: command_line
+    name: "{{ cam.name }} Latest Recording Time"
+    scan_interval: 60
+    command: "find /rtsp-cams/{{ cam.id }} -mindepth 2 -type f -name '*.mp4' | sort | tail -1 | xargs -I{} basename {} .mp4"
+    value_template: {% raw %}"{{ strptime(value, '%Y-%m-%d_%H-%M-%S') }}"{% endraw %}
+
+
+{% endfor %}
 {% endif %}

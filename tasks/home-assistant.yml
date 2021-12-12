@@ -14,6 +14,7 @@
   with_items:
     - docker-compose.yml
     - configuration.yaml
+    - automations.yaml
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.

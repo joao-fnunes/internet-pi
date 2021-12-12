@@ -12,6 +12,8 @@ services:
     volumes:
       - ./config:/config
       - ./configuration.yaml:/config/configuration.yaml
+      - ./automations.yaml:/config/automations.yaml
+      - /mnt/seagate/rtsp/videos/cams:/rtsp-cams:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
       - home-assistant
