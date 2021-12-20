@@ -5,12 +5,15 @@
     state: directory
     mode: 0755
 
-- name: Copy home-assistant docker-compose template to Pi.
+- name: Copy home-assistant config to Pi.
   ansible.builtin.template:
-    src: templates/home-assistant/docker-compose.yml.j2
-    dest: "{{ config_dir }}/home-assistant/docker-compose.yml"
+    src: "templates/home-assistant/{{ item }}.j2"
+    dest: "{{ config_dir }}/home-assistant/{{ item }}"
     mode: '0640'
   notify: Restart home-assistant
+  with_items:
+    - docker-compose.yml
+    - configuration.yaml
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.
