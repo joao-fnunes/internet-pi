@@ -52,6 +52,9 @@ for datedir in $(find $dir -maxdepth 1 -type d | grep -P "\/\K$date_regex\$" | s
 
   if [[ -f $concat_video ]]; then
     echo "File $concat_video already exists"
+    echo "Removing dir $datedir..."
+    rm -rf $datedir
+    echo "Done"
     continue
   fi
 
@@ -88,9 +91,16 @@ for datedir in $(find $dir -maxdepth 1 -type d | grep -P "\/\K$date_regex\$" | s
   err=$?
 
   if [[ $err -ne 0 ]]; then
-    echo "Failure while concatenating videos for date $date"
+    echo "Failure while concatenating videos for date $date (err: $err)"
     exit $err
   fi
+
   echo "Done"
+
+  if [[ ! $concat_video == $concat_video_partial ]]; then
+    echo "Removing dir $datedir..."
+    rm -rf $datedir
+    echo "Done"
+  fi
 
 done

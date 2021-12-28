@@ -23,6 +23,13 @@
       target:
         entity_id:
           - light.family_room_light_switch
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.bright_tv_lamp
+          - switch.family_lamp_1
+          - switch.family_lamp_2
+          - switch.family_lamp_3
   condition: {% raw %}"{{ states('sensor.family_room_latest_recording_time') | as_datetime | as_local < now() - timedelta(minutes = 30) }}"{% endraw %}
 
 
