@@ -124,11 +124,11 @@ hlsAllowOrigin: '*'
 # another entry.
 paths:
 {% for cam in rtsp_cams %}
-  {{ cam.name }}:
+  {{ cam.id }}:
     source: {{ cam.source }}
-    sourceRetryPause: 2s
+    sourceRetryPause: 1s
 
-    runOnInit: /create-video.sh /videos/cams/{{ cam.name }} rtsp://localhost:$RTSP_PORT/$RTSP_PATH
+    runOnInit: /create-video.sh /videos/cams/{{ cam.id }} rtsp://localhost:$RTSP_PORT/$RTSP_PATH
     runOnInitRestart: yes
 
 {% endfor %}

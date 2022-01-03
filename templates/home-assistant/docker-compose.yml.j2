@@ -14,6 +14,9 @@ services:
       - ./configuration.yaml:/config/configuration.yaml
       - ./automations.yaml:/config/automations.yaml
       - /mnt/seagate/rtsp/videos/cams:/rtsp-cams:ro
+{% for cam in home_assistant_cams %}
+      - /mnt/seagate/rtsp/videos/cams/{{ cam.id }}/thumbnail.png:/config/www/{{ cam.id }}.png:ro
+{% endfor %}
       - /etc/localtime:/etc/localtime:ro
     networks:
       - home-assistant

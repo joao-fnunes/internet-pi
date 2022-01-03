@@ -1,6 +1,6 @@
 ---
 - alias: "Family Room Motion Detected"
-  id: "family_room_motion"
+  id: "family_room_motion_detected"
   trigger:
     - platform: state
       entity_id: sensor.family_room_latest_recording_time
@@ -13,8 +13,8 @@
           - switch.family_lamp_2
           - switch.family_lamp_3
 
-- alias: "Family Room No Motion"
-  id: "family_room_no_motion"
+- alias: "Family Room No Motion Detected"
+  id: "family_room_no_motion_detected"
   trigger:
     - platform: time_pattern
       minutes: "/10"
@@ -30,7 +30,7 @@
           - switch.family_lamp_1
           - switch.family_lamp_2
           - switch.family_lamp_3
-  condition: {% raw %}"{{ states('sensor.family_room_latest_recording_time') | as_datetime | as_local < now() - timedelta(minutes = 30) }}"{% endraw %}
+  condition: {% raw %}"{{ states('sensor.family_room_camera_latest_recording_time') | as_datetime | as_local < now() - timedelta(minutes = 30) }}"{% endraw %}
 
 
 - alias: "Family Room Light Switch On"
@@ -62,3 +62,44 @@
           - switch.family_lamp_1
           - switch.family_lamp_2
           - switch.family_lamp_3
+
+- alias: "Living Room No Motion Detected"
+  id: "living_room_no_motion_detected"
+  trigger:
+    - platform: time_pattern
+      minutes: "/10"
+  action:
+    - service: light.turn_off
+      target:
+        entity_id:
+          - light.dining_room_light_switch
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.living_room_bright_lamp_switch
+  condition: {% raw %}"{{ states('sensor.living_room_camera_latest_recording_time') | as_datetime | as_local < now() - timedelta(minutes = 30) }}"{% endraw %}
+
+
+- alias: "Dining Room Light Switch On"
+  id: "dining_room_light_switch_on"
+  trigger:
+    - platform: state
+      entity_id: light.dining_room_light_switch
+      to: "on"
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.living_room_bright_lamp_switch
+
+- alias: "Dining Room Light Switch Off"
+  id: "dining_room_light_switch_off"
+  trigger:
+    - platform: state
+      entity_id: light.dining_room_light_switch
+      to: "off"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.living_room_bright_lamp_switch
