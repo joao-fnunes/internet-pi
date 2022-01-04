@@ -7,7 +7,7 @@
 
 - name: Copy zwavejs config to Pi.
   ansible.builtin.template:
-    src: "templates/zwavejs/{{ item }}.j2"
+    src: "{{ item }}.j2"
     dest: "{{ config_dir }}/zwavejs/{{ item }}"
     mode: '0640'
   notify: Restart zwavejs

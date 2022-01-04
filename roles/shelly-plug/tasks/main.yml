@@ -9,7 +9,7 @@
 
 - name: Copy Shelly Plug docker-compose template to Pi.
   ansible.builtin.template:
-    src: templates/shelly-plug/docker-compose.yml.j2
+    src: docker-compose.yml.j2
     dest: "{{ config_dir }}/shelly-plug-prometheus/docker-compose.yml"
     mode: '0640'
   notify: Restart shelly-plug-prometheus

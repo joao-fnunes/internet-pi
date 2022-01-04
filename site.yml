@@ -1,5 +1,7 @@
 ---
 - hosts: internet_pi
+  roles:
+    - common
 
   pre_tasks:
     - name: Ensure apt cache is up to date.
@@ -17,66 +19,79 @@
       when:
         - ansible_facts.os_family == "Archlinux"
 
-  handlers:
-    - name: Include handlers.
-      ansible.builtin.import_tasks: tasks/handlers.yml
+  # handlers:
+  #   - name: Include handlers.
+  #     ansible.builtin.import_tasks: 
 
   tasks:
     - name: Setup Docker.
-      ansible.builtin.import_tasks: tasks/docker.yml
+      ansible.builtin.import_role:
+        name: docker
       become: true
 
     - name: Set up Internet Monitoring.
-      ansible.builtin.import_tasks: tasks/internet-monitoring.yml
+      ansible.builtin.import_role:
+        name: internet-monitoring
       when: monitoring_enable
 
     - name: Set up Pi Hole.
-      ansible.builtin.import_tasks: tasks/pi-hole.yml
+      ansible.builtin.import_role:
+        name: pi-hole
       when: pihole_enable
 
     - name: Set up Unbound.
-      tags: unbound
-      ansible.builtin.import_tasks: tasks/unbound.yml
+      ansible.builtin.import_role:
+        name: unbound
       when: unbound_enable
+      tags: unbound
 
     - name: Set up unbound-telemetry.
-      tags: unbound-telemetry
-      ansible.builtin.import_tasks: tasks/unbound-telemetry.yml
+      ansible.builtin.import_role:
+        name: unbound-telemetry
       when: unbound_telemetry_enable
+      tags: unbound-telemetry
 
     - name: Set up SNMP.
-      tags: snmp
-      ansible.builtin.import_tasks: tasks/snmp.yml
+      ansible.builtin.import_role:
+        name: snmp
       when: snmp_enable
+      tags: snmp
 
     - name: Set up RTSP.
-      tags: rtsp
-      ansible.builtin.import_tasks: tasks/rtsp.yml
+      ansible.builtin.import_role:
+        name: rtsp
       when: rtsp_enable
+      tags: rtsp
 
     - name: Set up SMB.
-      tags: smb
-      ansible.builtin.import_tasks: tasks/smb.yml
+      ansible.builtin.import_role:
+        name: smb
       when: smb_enable
+      tags: smb
 
     - name: Set up Home Assistant.
-      tags: home-assistant
-      ansible.builtin.import_tasks: tasks/home-assistant.yml
+      ansible.builtin.import_role:
+        name: home-assistant
       when: home_assistant_enable
+      tags: home-assistant
 
     - name: Set up ZWaveJS.
-      tags: zwavejs
-      ansible.builtin.import_tasks: tasks/zwavejs.yml
+      ansible.builtin.import_role:
+        name: zwavejs
       when: home_assistant_enable
+      tags: zwavejs
 
     - name: Set up Shelly Plug Monitoring.
-      ansible.builtin.import_tasks: tasks/shelly-plug.yml
+      ansible.builtin.import_role:
+        name: shelly-plug
       when: shelly_plug_enable
 
     - name: Set up Air Gradient Monitoring.
-      ansible.builtin.import_tasks: tasks/airgradient.yml
+      ansible.builtin.import_role:
+        name: airgradient
       when: airgradient_enable
 
     - name: Set up Starlink Monitoring.
-      ansible.builtin.import_tasks: tasks/starlink.yml
+      ansible.builtin.import_role:
+        name: starlink
       when: starlink_enable

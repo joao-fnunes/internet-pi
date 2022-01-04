@@ -7,7 +7,7 @@
 
 - name: Copy home-assistant config to Pi.
   ansible.builtin.template:
-    src: "templates/home-assistant/{{ item }}.j2"
+    src: "{{ item }}.j2"
     dest: "{{ config_dir }}/home-assistant/{{ item }}"
     mode: '0640'
   notify: Restart home-assistant

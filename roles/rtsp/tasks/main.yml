@@ -7,7 +7,7 @@
 
 - name: Copy rtsp config to Pi.
   ansible.builtin.template:
-    src: "templates/rtsp/{{ item }}.j2"
+    src: "{{ item }}.j2"
     dest: "{{ config_dir }}/rtsp/{{ item }}"
     mode: '0640'
   notify: Restart rtsp
@@ -16,22 +16,14 @@
     - rtsp-simple-server.yml
 
 - name: Copy executable scripts to Pi.
-  ansible.builtin.template:
-    src: "templates/rtsp/{{ item }}"
+  ansible.builtin.copy:
+    src: "{{ item }}"
     dest: "{{ config_dir }}/rtsp/{{ item }}"
     mode: '0740'
   notify: Restart rtsp
   with_items:
     - create-video.sh
     - concat-videos.sh
-
-- name: Copy create-video.sh to Pi.
-  ansible.builtin.template:
-    src: templates/rtsp/create-video.sh
-    dest: "{{ config_dir }}/rtsp/create-video.sh"
-    mode: '0750'
-  become: false
-  notify: Restart rtsp
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.

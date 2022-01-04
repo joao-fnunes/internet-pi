@@ -21,7 +21,7 @@
 
 - name: Copy templated internet-monitoring files into place.
   ansible.builtin.template:
-    src: templates/internet-monitoring/{{ item }}.j2
+    src: "{{ item }}.j2"
     dest: "{{ config_dir }}/internet-monitoring/{{ item }}"
     mode: 0644
   with_items:

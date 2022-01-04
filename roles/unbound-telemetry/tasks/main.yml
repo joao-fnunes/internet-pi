@@ -11,7 +11,7 @@
 
 - name: Copy unbound-telemetry docker-compose template to Pi.
   ansible.builtin.template:
-    src: templates/unbound-telemetry/docker-compose.yml.j2
+    src: docker-compose.yml.j2
     dest: "{{ config_dir }}/unbound-telemetry/docker-compose.yml"
     mode: '0640'
   notify: Restart unbound-telemetry
