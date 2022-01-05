@@ -3,22 +3,24 @@
     that: ansible_machine.startswith("arm")
     fail_msg: "The current docker image for unbound-telemetry is for ARM systems only."
 
-- name: Create unbound-telemetry folder on Pi.
+- name: "Create {{ container_name }} folder"
   ansible.builtin.file:
-    path: "{{ config_dir }}/unbound-telemetry"
+    path: "{{ config_dir }}/{{ container_name }}"
     state: directory
     mode: 0755
 
-- name: Copy unbound-telemetry docker-compose template to Pi.
+- name: "Copy {{ container_name }} config."
   ansible.builtin.template:
-    src: docker-compose.yml.j2
-    dest: "{{ config_dir }}/unbound-telemetry/docker-compose.yml"
+    src: "{{ item }}.j2"
+    dest: "{{ config_dir }}/{{ container_name  }}/{{ item }}"
     mode: '0640'
-  notify: Restart unbound-telemetry
+  notify: Restart {{ container_name }}
+  with_items:
+    - docker-compose.yml
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.
-- name: Ensure unbound-telemetry is running.
+- name: "Ensure {{ container_name }} is running."
   community.docker.docker_compose:
-    project_src: "{{ config_dir }}/unbound-telemetry/"
+    project_src: "{{ config_dir }}/{{ container_name }}/"
     build: false

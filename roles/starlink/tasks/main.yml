@@ -5,7 +5,7 @@
     state: directory
     mode: 0755
 
-- name: Copy Starlink docker-compose template to Pi.
+- name: Copy Starlink docker-compose template.
   ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: "{{ config_dir }}/starlink-exporter/docker-compose.yml"

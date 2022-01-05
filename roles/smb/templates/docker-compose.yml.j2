@@ -17,4 +17,4 @@ services:
     volumes:
       - /mnt/seagate/:/share/seagate/
     restart: unless-stopped
-    command: "-u pi:pi -s 'seagate:/share/seagate:ro:pi'"
+    command: "-u {{ smb_user }}:{{ smb_password }} -s 'seagate:/share/seagate/rtsp/videos/cams:ro:{{ smb_user }}'"

@@ -1,11 +1,11 @@
 ---
-- name: Create Pi-hole folder on Pi.
+- name: Create Pi-hole folder
   ansible.builtin.file:
     path: "{{ config_dir }}/pi-hole"
     state: directory
     mode: 0755
 
-- name: Copy Pi-hole docker-compose template to Pi.
+- name: Copy Pi-hole docker-compose template.
   ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: "{{ config_dir }}/pi-hole/docker-compose.yml"

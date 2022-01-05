@@ -47,6 +47,12 @@
     build: false
     restarted: true
 
+- name: Restart nextcloud
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/nextcloud/"
+    build: false
+    restarted: true
+
 - name: Restart internet-monitoring
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/internet-monitoring/"

@@ -1,5 +1,5 @@
 ---
-- name: Clone shelly-plug-prometheus repo to Pi.
+- name: Clone shelly-plug-prometheus repo.
   ansible.builtin.git:
     repo: https://github.com/geerlingguy/shelly-plug-prometheus
     dest: "{{ config_dir }}/shelly-plug-prometheus/"
@@ -7,7 +7,7 @@
     accept_hostkey: true
   notify: Restart shelly-plug-prometheus
 
-- name: Copy Shelly Plug docker-compose template to Pi.
+- name: Copy Shelly Plug docker-compose template.
   ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: "{{ config_dir }}/shelly-plug-prometheus/docker-compose.yml"

@@ -1,35 +1,35 @@
 ---
-- name: Create rtsp folder on Pi.
+- name: "Create {{ container_name }} folder"
   ansible.builtin.file:
-    path: "{{ config_dir }}/rtsp"
+    path: "{{ config_dir }}/{{ container_name }}"
     state: directory
     mode: 0755
 
-- name: Copy rtsp config to Pi.
+- name: "Copy {{ container_name }} config."
   ansible.builtin.template:
     src: "{{ item }}.j2"
-    dest: "{{ config_dir }}/rtsp/{{ item }}"
+    dest: "{{ config_dir }}/{{ container_name  }}/{{ item }}"
     mode: '0640'
-  notify: Restart rtsp
+  notify: Restart {{ container_name }}
   with_items:
     - docker-compose.yml
-    - rtsp-simple-server.yml
+    - "rtsp-simple-server.yml"
 
-- name: Copy executable scripts to Pi.
+- name: Copy executable scripts.
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ config_dir }}/rtsp/{{ item }}"
+    dest: "{{ config_dir }}/{{ container_name }}/{{ item }}"
     mode: '0740'
-  notify: Restart rtsp
+  notify: "Restart {{ container_name }}"
   with_items:
     - create-video.sh
     - concat-videos.sh
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.
-- name: Ensure rtsp is running.
+- name: "Ensure {{ container_name }} is running."
   community.docker.docker_compose:
-    project_src: "{{ config_dir }}/rtsp/"
+    project_src: "{{ config_dir }}/{{ container_name }}/"
     build: false
 
 - name: Install postfix package for logging cron output
@@ -40,10 +40,10 @@
 
 - name: Create cron job for concatenating videos
   ansible.builtin.cron:
-    name: "rtsp - concat videos for {{ item }}"
+    name: "{{ container_name }} - concat videos for {{ item }}"
     hour: 0
     minute: 30
-    job: "{{ config_dir }}/rtsp/concat-videos.sh /mnt/seagate/rtsp/videos/cams/{{ item }}"
+    job: "{{ config_dir }}/{{ container_name }}/concat-videos.sh /mnt/seagate/rtsp/videos/cams/{{ item }}"
   with_items:
     - family-room
     - living-room

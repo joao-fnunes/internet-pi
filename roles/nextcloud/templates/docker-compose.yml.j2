@@ -1,0 +1,35 @@
+# {{ ansible_managed }}
+---
+version: "2.1"
+
+services:
+  {{ container_name }}-mariadb:
+    image: lscr.io/linuxserver/mariadb
+    container_name: {{ container_name }}-mariadb
+    environment:
+      - PUID={{ ansible_user_uid }}
+      - PGID={{ ansible_user_gid }}
+      - TZ={{ timezone }}
+      - MYSQL_ROOT_PASSWORD={{ nextcloud_mariadb_root_password }}
+      - MYSQL_DATABASE={{ nextcloud_mariadb_database }}
+      - MYSQL_USER={{ nextcloud_mariadb_user }}
+      - MYSQL_PASSWORD={{ nextcloud_mariadb_password }}
+    volumes:
+      - ./mariadb-config:/config
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+
+  {{ container_name }}:
+    image: lscr.io/linuxserver/nextcloud
+    container_name: {{ container_name }}
+    environment:
+      - PUID={{ ansible_user_uid }}
+      - PGID={{ ansible_user_gid }}
+      - TZ={{ timezone }}
+    volumes:
+      - ./config:/config
+      - {{ nextcloud_data_volume_path }}:/data
+    ports:
+      - 4433:443
+    restart: unless-stopped

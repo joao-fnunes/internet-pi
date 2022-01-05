@@ -19,10 +19,6 @@
       when:
         - ansible_facts.os_family == "Archlinux"
 
-  # handlers:
-  #   - name: Include handlers.
-  #     ansible.builtin.import_tasks: 
-
   tasks:
     - name: Setup Docker.
       ansible.builtin.import_role:
@@ -80,6 +76,12 @@
         name: zwavejs
       when: home_assistant_enable
       tags: zwavejs
+
+    - name: Set up Nextcloud.
+      ansible.builtin.import_role:
+        name: nextcloud
+      when: nextcloud_enable
+      tags: nextcloud
 
     - name: Set up Shelly Plug Monitoring.
       ansible.builtin.import_role:
