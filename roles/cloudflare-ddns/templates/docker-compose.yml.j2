@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+---
+version: '2'
+
+services:
+  {{ container_name }}:
+    image: oznu/cloudflare-ddns:latest
+    container_name: {{ container_name }}
+    environment:
+      - PUID={{ ansible_user_uid }}
+      - PGID={{ ansible_user_gid }}
+      - TZ={{ timezone }}
+      - API_KEY={{ cloudflare_ddns_api_key }}
+      - ZONE={{ cloudflare_ddns_zone }}
+      - SUBDOMAIN={{ cloudflare_ddns_subdomain }}
+      - PROXIED=true
+    restart: unless-stopped

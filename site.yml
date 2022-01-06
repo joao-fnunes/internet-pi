@@ -83,6 +83,12 @@
       when: nextcloud_enable
       tags: nextcloud
 
+    - name: Set up Cloudflare DDNS.
+      ansible.builtin.import_role:
+        name: cloudflare-ddns
+      when: cloudflare_ddns_enable
+      tags: cloudflare-ddns
+
     - name: Set up Shelly Plug Monitoring.
       ansible.builtin.import_role:
         name: shelly-plug

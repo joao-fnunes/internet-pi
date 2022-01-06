@@ -53,6 +53,12 @@
     build: false
     restarted: true
 
+- name: Restart cloudflare-ddns
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/cloudflare-ddns/"
+    build: false
+    restarted: true
+
 - name: Restart internet-monitoring
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/internet-monitoring/"

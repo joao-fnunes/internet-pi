@@ -1,0 +1,22 @@
+---
+- name: "Create {{ container_name }} folder"
+  ansible.builtin.file:
+    path: "{{ config_dir }}/{{ container_name }}"
+    state: directory
+    mode: 0755
+
+- name: "Copy {{ container_name }} config."
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ config_dir }}/{{ container_name  }}/{{ item }}"
+    mode: '0640'
+  notify: Restart {{ container_name }}
+  with_items:
+    - docker-compose.yml
+
+# TODO: The first time this playbook is run, the `pi` user may not be added
+# to the `docker` group, so this task may fail.
+- name: "Ensure {{ container_name }} is running."
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/{{ container_name }}/"
+    build: false
