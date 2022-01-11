@@ -12,6 +12,8 @@ services:
     container_name: unbound-telemetry
     image: joaofnunes/unbound-telemetry-rpi
     command: tcp --control-interface unbound:8953
+    environment:
+      TZ: '{{ timezone }}'
     ports:
       - "9167:9167/tcp"
     restart: unless-stopped

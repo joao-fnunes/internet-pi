@@ -7,6 +7,8 @@ services:
   home-assistant:
     container_name: home-assistant
     image: ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
+    environment:
+      TZ: '{{ timezone }}'
     ports:
       - 8123:8123
     volumes:
@@ -17,7 +19,6 @@ services:
 {% for cam in home_assistant_cams %}
       - /mnt/seagate/rtsp/videos/cams/{{ cam.id }}/thumbnail.png:/config/www/{{ cam.id }}.png:ro
 {% endfor %}
-      - /etc/localtime:/etc/localtime:ro
     networks:
       - home-assistant
     restart: unless-stopped

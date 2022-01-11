@@ -1,0 +1,51 @@
+---
+- name: "Create {{ container_name }} folder"
+  ansible.builtin.file:
+    path: "{{ config_dir }}/{{ container_name }}"
+    state: directory
+    mode: 0755
+
+- name: "Copy {{ container_name }} config."
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ config_dir }}/{{ container_name  }}/{{ item }}"
+    mode: '0640'
+  notify: Restart {{ container_name }}
+  with_items:
+    - docker-compose.yml
+
+- name: Install the DNS config file
+  template:
+    src: "dns-conf/cloudflare.ini.j2"
+    dest: "{{ config_dir }}/{{ container_name }}/config/dns-conf/cloudflare.ini"
+  notify: Restart {{ container_name }}
+
+- name: Install the SWAG config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ config_dir }}/{{ container_name }}/{{ item | basename | regex_replace('.j2$', '') }}"
+  when: lookup('vars', ((item | basename).split('.')[0]) + '_enable') | default(False)
+  with_fileglob:
+    - templates/proxy-confs/*.j2
+  register: swag_config
+  notify: Restart {{ container_name }}
+
+- name: Create a SWAG network, add all the containers to be reverse-proxied into it
+  docker_network:
+    name: "{{ container_name }}"
+
+# TODO: The first time this playbook is run, the `pi` user may not be added
+# to the `docker` group, so this task may fail.
+- name: "Ensure {{ container_name }} is running."
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/{{ container_name }}/"
+    build: false
+
+- name: Test Nginx configuration
+  shell: docker exec {{ container_name }} /usr/sbin/nginx -c /config/nginx/nginx.conf -t
+  register: swag_nginx_test
+  changed_when: swag_nginx_test is not search("test is successful")
+  failed_when: swag_nginx_test is not search("test is successful")
+  retries: 3
+  delay: 10
+  until: swag_nginx_test is not failed

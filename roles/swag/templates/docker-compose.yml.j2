@@ -1,0 +1,33 @@
+# {{ ansible_managed }}
+---
+version: "2.1"
+
+networks:
+  {{ container_name }}:
+    external: true
+
+services:
+  {{ container_name }}:
+    image: ghcr.io/linuxserver/swag
+    container_name: {{ container_name }}
+    cap_add:
+      - NET_ADMIN
+    environment:
+      PUID: {{ ansible_user_uid }}
+      PGID: {{ ansible_user_gid }}
+      TZ: {{ timezone }}
+      URL: {{ cloudflare_ddns_zone }}
+      SUBDOMAINS: nextcloud,home-assistant
+      VALIDATION: dns
+      CERTPROVIDER: zerossl #optional
+      DNSPLUGIN: cloudflare #optional
+      EMAIL: {{ cloudflare_ddns_api_email }} #optional
+      DOCKER_MODS: linuxserver/mods:swag-cloudflare-real-ip
+    volumes:
+      - ./config:/config
+      - ./nextcloud.subdomain.conf:/config/nginx/proxy-confs/nextcloud.subdomain.conf
+    ports:
+      - 443:443
+    networks:
+      - {{ container_name }}
+    restart: unless-stopped

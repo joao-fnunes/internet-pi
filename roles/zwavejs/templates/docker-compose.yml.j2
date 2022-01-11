@@ -17,12 +17,12 @@ services:
       - ./store:/usr/src/app/store
       - ./settings.json:/usr/src/app/store/settings.json
       - ./users.json:/usr/src/app/store/users.json
-      - /etc/localtime:/etc/localtime:ro
     networks:
       - home-assistant
     environment:
-      - ZWAVEJS_EXTERNAL_CONFIG=/usr/src/app/store/.config-db
-      - SESSION_SECRET='{{ zwavejs_session_secret }}'
+      TZ: {{ timezone }}
+      ZWAVEJS_EXTERNAL_CONFIG: /usr/src/app/store/.config-db
+      SESSION_SECRET: {{ zwavejs_session_secret }}
 
 networks:
   home-assistant:

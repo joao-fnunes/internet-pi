@@ -17,6 +17,8 @@ services:
 {% else %}
     image: mvance/unbound:latest
 {% endif %}
+    environment:
+      TZ: '{{ timezone }}'
     ports:
       - "5335:53/tcp"
       - "5335:53/udp"

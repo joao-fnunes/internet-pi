@@ -25,6 +25,12 @@
         name: docker
       become: true
 
+    - name: Set up swag.
+      ansible.builtin.import_role:
+        name: swag
+      when: swag_enable
+      tags: swag
+
     - name: Set up Internet Monitoring.
       ansible.builtin.import_role:
         name: internet-monitoring
@@ -34,6 +40,7 @@
       ansible.builtin.import_role:
         name: pi-hole
       when: pihole_enable
+      tags: pi-hole
 
     - name: Set up Unbound.
       ansible.builtin.import_role:
