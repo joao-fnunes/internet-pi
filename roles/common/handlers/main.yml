@@ -65,6 +65,12 @@
     build: false
     restarted: true
 
+- name: Restart traefik
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/traefik/"
+    build: false
+    restarted: true
+
 - name: Restart internet-monitoring
   community.docker.docker_compose:
     project_src: "{{ config_dir }}/internet-monitoring/"

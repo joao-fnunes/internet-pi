@@ -5,16 +5,15 @@
     state: directory
     mode: 0755
 
-- name: "Copy {{ container_name }} docker-compose template."
+- name: "Copy {{ container_name }} config."
   ansible.builtin.template:
-    src: docker-compose.yml.j2
-    dest: "{{ config_dir }}/{{ container_name }}/docker-compose.yml"
+    src: "{{ item }}.j2"
+    dest: "{{ config_dir }}/{{ container_name  }}/{{ item }}"
     mode: '0640'
-  notify: "Restart {{ container_name }}"
-
-- name: "Create {{ docker_container }} docker network"
-  docker_network:
-    name: "{{ container_name }}"
+  notify: Restart {{ container_name }}
+  with_items:
+    - docker-compose.yml
+    - traefik.yml
 
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.

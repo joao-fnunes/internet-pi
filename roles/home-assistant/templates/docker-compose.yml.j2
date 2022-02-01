@@ -4,13 +4,11 @@ version: "3"
 
 # More info at https://www.home-assistant.io/installation/raspberrypi
 services:
-  home-assistant:
-    container_name: home-assistant
+  {{ container_name }}:
+    container_name: {{ container_name }}
     image: ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
     environment:
       TZ: '{{ timezone }}'
-    ports:
-      - 8123:8123
     volumes:
       - ./config:/config
       - ./configuration.yaml:/config/configuration.yaml
@@ -20,10 +18,14 @@ services:
       - /mnt/seagate/rtsp/videos/cams/{{ cam.id }}/thumbnail.png:/config/www/{{ cam.id }}.png:ro
 {% endfor %}
     networks:
-      - home-assistant
+      - {{ container_name }}
     restart: unless-stopped
     privileged: True
+    labels:
+      - traefik.http.routers.{{ container_name }}.rule=Host(`{{ container_name }}.lan`,`{{ container_name }}.{{ traefik_dns_domain }}`)
+      - traefik.http.routers.{{ container_name }}.tls
+      - traefik.http.services.{{ container_name }}.loadbalancer.server.port=8123
 
 networks:
-  home-assistant:
+  {{ container_name }}:
     external: true

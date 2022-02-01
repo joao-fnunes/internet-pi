@@ -12,6 +12,13 @@
     mode: '0640'
   notify: Restart pi-hole
 
+- name: Create pi-hole docker network
+  docker_network:
+    name: pi-hole
+    ipam_config:
+      - subnet: "{{ pihole_subnet }}"
+        gateway: "{{ pihole_gateway }}"
+
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.
 - name: Ensure Pi-hole is running.

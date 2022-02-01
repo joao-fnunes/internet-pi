@@ -96,6 +96,12 @@
       when: cloudflare_ddns_enable
       tags: cloudflare-ddns
 
+    - name: Set up traefik.
+      ansible.builtin.import_role:
+        name: traefik
+      when: traefik_enable
+      tags: traefik
+
     - name: Set up Shelly Plug Monitoring.
       ansible.builtin.import_role:
         name: shelly-plug

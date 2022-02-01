@@ -16,6 +16,10 @@
     - configuration.yaml
     - automations.yaml
 
+- name: Create a {{ container_name }} network
+  docker_network:
+    name: "{{ container_name }}"
+
 # TODO: The first time this playbook is run, the `pi` user may not be added
 # to the `docker` group, so this task may fail.
 - name: "Ensure {{ container_name }} is running."

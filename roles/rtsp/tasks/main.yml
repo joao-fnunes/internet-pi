@@ -13,7 +13,7 @@
   notify: Restart {{ container_name }}
   with_items:
     - docker-compose.yml
-    - "rtsp-simple-server.yml"
+    - rtsp-simple-server.yml
 
 - name: Copy executable scripts.
   ansible.builtin.copy:

@@ -62,22 +62,3 @@
 # reset_connection doesn't support conditionals.
 - name: Reset connection so docker group is picked up.
   meta: reset_connection
-
-- name: Create pi-hole docker network
-  docker_network:
-    name: pi-hole
-    ipam_config:
-      - subnet: "{{ pihole_subnet }}"
-        gateway: "{{ pihole_gateway }}"
-
-- name: Create Unbound docker network
-  docker_network:
-    name: unbound
-
-- name: Create SNMP docker network
-  docker_network:
-    name: snmp
-
-- name: Create Home Assistant docker network
-  docker_network:
-    name: home-assistant

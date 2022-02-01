@@ -10,6 +10,11 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.0.0.0/8 # TODO: traefik only
+
 {% if home_assistant_wemo_static_devices is defined %}
 wemo:
   discovery: true

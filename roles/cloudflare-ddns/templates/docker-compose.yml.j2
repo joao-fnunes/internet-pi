@@ -10,7 +10,7 @@ services:
       PUID: {{ ansible_user_uid }}
       PGID: {{ ansible_user_gid }}
       TZ: {{ timezone }}
-      API_KEY: {{ cloudflare_ddns_api_key }}
+      API_KEY: {{ cloudflare_ddns_api_token }}
       PROXIED: 'true'
       ZONE: {{ cloudflare_ddns_zone }}
 {% if cloudflare_ddns_subdomain is defined %}

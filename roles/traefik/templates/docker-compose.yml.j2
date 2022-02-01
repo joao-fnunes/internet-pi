@@ -1,0 +1,39 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+networks:
+  pi-hole:
+    external: true
+  home-assistant:
+    external: true
+  nextcloud:
+    external: true
+
+services:
+  {{ container_name }}:
+    container_name: {{ container_name }}
+    # The official v2 Traefik docker image
+    image: traefik:v2.6
+    # Enables the web UI and tells Traefik to listen to docker
+    # command: --api.insecure=true --providers.docker
+    environment:
+      PUID: {{ ansible_user_uid }}
+      PGID: {{ ansible_user_gid }}
+      TZ: {{ timezone }}
+      CF_API_EMAIL: {{ cloudflare_ddns_api_email }}
+      CF_DNS_API_TOKEN: {{ cloudflare_ddns_api_token }}
+    ports:
+      - "80:80"
+      - "443:443"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./etc-traefik:/etc/traefik/
+    networks:
+      - pi-hole
+      - home-assistant
+      - nextcloud

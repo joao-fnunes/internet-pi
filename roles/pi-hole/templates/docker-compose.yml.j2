@@ -16,7 +16,6 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp"
-      - "80:80/tcp"
     environment:
       TZ: '{{ timezone }}'
       WEBPASSWORD: '{{ pihole_password }}'
@@ -27,7 +26,6 @@ services:
       REV_SERVER_TARGET: '{{ pihole_rev_server_target }}'
       REV_SERVER_DOMAIN: '{{ pihole_rev_server_domain }}'
       WEBTHEME: 'default-darker'
-
     dns:
       - 127.0.0.1
       - '{{ unbound_ip }}'
@@ -39,3 +37,6 @@ services:
     restart: unless-stopped
     networks:
       - pi-hole
+    labels:
+      - traefik.http.routers.pihole.rule=Host(`pi.hole`)
+      - traefik.http.services.pihole.loadbalancer.server.port=80

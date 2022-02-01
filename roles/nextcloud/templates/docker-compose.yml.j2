@@ -4,7 +4,6 @@ version: "2.1"
 
 networks:
   {{ container_name }}:
-  swag:
     external: true
 
 services:
@@ -37,9 +36,10 @@ services:
     volumes:
       - ./config:/config
       - {{ nextcloud_data_volume_path }}:/data
-    ports:
-      - 4433:443
     networks:
       - {{ container_name }}
-      - swag
     restart: unless-stopped
+    labels:
+      - traefik.http.routers.{{ container_name }}.rule=Host(`{{ container_name }}.lan`,`{{ container_name }}.{{ traefik_dns_domain }}`)
+      - traefik.http.services.{{ container_name }}.loadbalancer.server.port=443
+      - traefik.http.services.{{ container_name }}.loadbalancer.server.scheme=https
